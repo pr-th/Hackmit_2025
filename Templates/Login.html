@@ -1,4 +1,6 @@
-{% extends "Home.html" %} {% block Heading %}
+{% extends "Home.html" %} 
+
+{% block Heading %}
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Login | Flask App</title>
@@ -81,7 +83,9 @@
   }
 </style>
 
-{% endblock %} {% block Body %}
+{% endblock %} 
+
+{% block Body %}
 <div class="login-container">
   <h2>Login</h2>
   <form action="#" method="POST">
@@ -94,7 +98,7 @@
       <input type="password" id="password" name="password" required />
     </div>
     <button type="submit">Login</button>
-    <p class="signup-link">Don't have an account? <a href="#">Sign up</a></p>
+    <p class="signup-link">Don't have an account? <a href="/register">Sign up</a></p>
   </form>
 </div>
 {% endblock %}

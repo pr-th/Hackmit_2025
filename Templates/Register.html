@@ -1,6 +1,100 @@
-{% extends "Home.html" %}
-{% block Body %}
+{% extends "Home.html" %}  {% block Heading %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Register | Flask App</title>
+<style>
+  .register-container {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 1300px;
+    text-align: center;
+  }
 
-register
+  h2 {
+    margin-bottom: 20px;
+    color: #333;
+    display: inline;
+  }
 
-{% endblock %} 
+  .input-group {
+    margin-bottom: 15px;
+    text-align: left;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .input-group label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+  }
+
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  .login-link {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  .login-link a {
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  .login-link a:hover {
+    text-decoration: underline;
+  }
+</style>
+{% endblock %} {% block Body %}
+<div class="register-container">
+  <h2>Register</h2>
+  <form action="#" method="POST">
+    <div class="input-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required />
+    </div>
+    <div class="input-group">
+      <label for="email">Gmail ID</label>
+      <input type="email" id="email" name="email" required />
+    </div>
+    <div class="input-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
+    </div>
+    <button type="submit">Register</button>
+    <p class="login-link">
+      Already have an account? <a href="/login">Login</a>
+    </p>
+  </form>
+</div>
+{% endblock %}
