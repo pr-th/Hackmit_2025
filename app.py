@@ -1,6 +1,15 @@
 from flask import Flask,render_template
+from Model.db import db,User, Achievement
+
 app =Flask(__name__)
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/prthm/OneDrive/Desktop/VS/Hackmit_2025/Model/site.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()
 
 @app.route('/')
 def homepage():
@@ -25,7 +34,6 @@ def register():
 @app.route('/tipsandtricks')
 def tipsandtricks():
     return render_template("User/tipsandtricks.html")   
-
 
 if __name__ == "__main__":
     app.run(debug = True)
