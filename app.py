@@ -26,6 +26,10 @@ def login():
 def register():
     return render_template("Register.html")   
 
+@app.route('/tipsandtricks')
+def tipsandtricks():
+    return render_template("User/tipsandtricks.html")   
+
 
 if __name__ == "__main__":
     app.run(debug = True)
