@@ -224,45 +224,45 @@
     }
   </style>
 </head>
-<body>
-  <!-- Sidebar -->
+<body>  
+  <script>
+    var user = JSON.parse('{{ user | tojson | safe }}');  
+  </script>  
   <div class="sidebar">
     <div class="brand">FinQuest</div>
     <nav>
       <ul>
-        <li class="active"><a href="#">Dashboard</a></li>
-        <li><a href="/about">Learning Paths</a></li>
-        <li><a href="#">Challenges</a></li>
-        <li><a href="#">Achievements</a></li>
-        <li><a href="#">Games</a></li>
-        <li><a href="#">Profile</a></li>
+        <li class="active"><a href="/home">Dashboard</a></li>
+        <li><a href="/learningpaths">Learning Paths</a></li>
+        <li><a href="/recomendations">Recomendations</a></li>
+        <li><a href="/achievements">Achievements</a></li>
+        <li><a href="/games">Games</a></li>
+        <li><a href="/profile">Profile</a></li>
       </ul>
     </nav>
   </div>
-
-  <!-- Main Content -->
+  
   <div class="main-content">
     <!-- Header -->
     <div class="header">
-      <h2>Hey, {{ username }} <span style="font-size:1.2rem;">👋</span></h2>
-      <p>Ready to continue your financial journey?</p>
-      <div class="daily-challenge">
-        <span>Daily Challenge</span>
-        <span>0/4</span>
-      </div>
+      <h2>Hey, {{ user.username }} <span style="font-size:1.2rem;">👋</span></h2>
+      <p>Ready to continue your financial journey?</p>      
     </div>
 
     <!-- Learning Paths -->
+
     <div class="learning-paths">
       <h3>Learning Paths</h3>
       <div class="cards">
         <div class="card">
+          
           <h4>Investing Essentials</h4>
           <p>Learn how to grow your money through stocks, bonds, and more.</p>
           <div class="progress-bar">
             <div class="progress" style="width: 0%;"></div>
           </div>
         </div>
+
         <div class="card">
           <h4>Budgeting Mastery</h4>
           <p>Master your monthly expenses and savings strategies.</p>
@@ -270,6 +270,7 @@
             <div class="progress" style="width: 0%;"></div>
           </div>
         </div>
+
         <div class="card">
           <h4>Credit Management</h4>
           <p>Build and maintain a healthy credit score.</p>
@@ -277,6 +278,7 @@
             <div class="progress" style="width: 0%;"></div>
           </div>
         </div>
+
       </div>
     </div>
 
@@ -305,5 +307,7 @@
       <button>Start Lesson</button>
     </div>
   </div>
+
+
 </body>
 </html>

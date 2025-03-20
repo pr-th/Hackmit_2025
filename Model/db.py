@@ -14,6 +14,18 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, nullable =False , default = False)
     achievements = db.relationship('UserAchievement', back_populates='user', lazy=True)
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            "exp": self.exp,
+            "risk_level": self.risk_level,
+            "last_login": self.last_login.isoformat() if self.last_login else None,
+            "is_admin": self.is_admin
+        }
+
+
 class Achievement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)

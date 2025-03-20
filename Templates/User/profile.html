@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FinQuest Dashboard</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" />
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background-color: #f4f5f7;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background-color: #fff;
+      border-right: 1px solid #e1e1e1;
+      padding: 1.5rem;
+    }
+    .sidebar .brand {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      color: #4b4b4b;
+    }
+    .sidebar nav ul {
+      list-style: none;
+    }
+    .sidebar nav ul li {
+      margin-bottom: 1rem;
+    }
+    .sidebar nav ul li a {
+      text-decoration: none;
+      color: #555;
+      font-size: 1rem;
+      padding: 0.5rem 0;
+      display: block;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+    .sidebar nav ul li a:hover {
+      background-color: #f0f0f0;
+    }
+    .sidebar nav ul li.active a {
+      background-color: #eef2ff;
+      color: #4b59f7;
+      font-weight: 600;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    /* Profile Page */
+    .profile {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      text-align: center;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .profile img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+    }
+    .profile h2 {
+      font-size: 1.5rem;
+      color: #333;
+    }
+    .profile p {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+    .profile button {
+      background-color: #4b59f7;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      font-weight: 600;
+    }
+    .profile button:hover {
+      background-color: #3b49d4;
+    }
+
+    /* EXP Bar */
+.exp-container {
+    width: 100%;
+    max-width: 300px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px auto;
+  }
+  .exp-bar {
+    height: 10px;
+    width: 100%;
+    background-color: #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .exp-fill {
+    height: 100%;
+    width: 0%;
+    background-color: #4b59f7;
+    transition: width 0.5s ease-in-out;
+  }
+  
+  </style>
+</head>
+<body>  
+  <script>
+    var user = JSON.parse('{{ user | tojson | safe }}');  
+  </script>  
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="brand">FinQuest</div>
+    <nav>
+      <ul>
+        <li><a href="/home">Dashboard</a></li>
+        <li><a href="/learningpaths">Learning Paths</a></li>
+        <li><a href="/recomendations">Recomendations</a></li>
+        <li><a href="/achievements">Achievements</a></li>
+        <li><a href="/games">Games</a></li>
+        <li class="active"><a href="/profile">Profile</a></li>
+      </ul>
+    </nav>
+  </div>
+
+
+<div class="main-content">
+    <div class="profile">
+      <img src="https://picsum.photos/200/300" alt="Profile Picture" />
+      <h2 id="username"></h2>
+      <p>Email: <span id="email"></span></p>
+      <p>Last Login: <span id="last_login"></span></p>      
+      <p>Level: <span id="lvl_roman"></span></p>
+      
+    
+      <div class="exp-container">
+        <div class="exp-bar">
+          <div class="exp-fill" id="exp_progress"></div>
+        </div>
+      </div>
+      
+      <p>Exp: <span id="exp"></span> / <span id="next_lvl_exp"></span></p>
+    </div>
+  </div>
+  
+
+  <script>    
+
+function toRoman(num) {
+    const roman = ["M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"];
+    const values = [1000,900,500,400,100,90,50,40,10,9,5,4,1];
+    let result = "";
+    for (let i = 0; i < values.length; i++) {
+      while (num >= values[i]) {
+        result += roman[i];
+        num -= values[i];
+      }
+    }
+    return result;
+  }
+  
+  
+  var user = JSON.parse('{{ user | tojson | safe }}');
+  
+  
+  const level = user.lvl || 1;
+  const exp = user.exp || 0;
+  const next_lvl_exp = level * 100; 
+  
+  
+  document.getElementById("username").textContent = user.username || "User";
+  document.getElementById("email").textContent = user.email || "user@example.com";
+  document.getElementById("last_login").textContent = user.last_login?.split(":")[0] || "N/A";
+  
+  
+  document.getElementById("lvl_roman").textContent = toRoman(level);
+  document.getElementById("exp").textContent = exp;
+  document.getElementById("next_lvl_exp").textContent = next_lvl_exp;
+  
+  
+  const progress = Math.min((exp / next_lvl_exp) * 100, 100);
+  document.getElementById("exp_progress").style.width = progress + "%";
+  
+
+  </script>
+</body>
+</html>

@@ -17,6 +17,11 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+def get_logged_in_user():
+    if "userid" not in session:
+        return redirect(url_for("login"))
+    return User.query.get(session["userid"])
+
 @app.route('/')
 @app.route('/home-guest')
 def homepage():
@@ -24,7 +29,8 @@ def homepage():
 
 @app.route('/home')
 def userhomepage():
-    return render_template("User/home.html") 
+    user = get_logged_in_user()
+    return render_template("User/home.html",user=user.to_dict()) 
 
 @app.route('/about')
 def about():
@@ -63,6 +69,11 @@ def register():
 @app.route('/tipsandtricks')
 def tipsandtricks():
     return render_template("User/tipsandtricks.html")   
+
+@app.route('/profile')
+def profile():
+    user = get_logged_in_user()
+    return render_template("User/profile.html",user=user.to_dict())
 
 if __name__ == "__main__":
     app.run(debug = True)
