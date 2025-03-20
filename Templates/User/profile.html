@@ -126,11 +126,39 @@
     transition: width 0.5s ease-in-out;
   }
   
+  #logout-btn {
+    background-color: #ff4b4b;  /* Red for logout */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: 600;
+    display: block;
+    width: 100%;  /* Full width */
+    margin-top: 1.5rem;
+  }
+
+  #logout-btn:hover {
+    background-color: #d93636;  /* Darker red on hover */
+  }
+
   </style>
 </head>
 <body>  
   <script>
     var user = JSON.parse('{{ user | tojson | safe }}');  
+    
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("logout-btn").addEventListener("click", function () {
+          window.location.href = "/logout";  
+      });
+  });
+  
+    
+
   </script>  
 
   <!-- Sidebar -->
@@ -154,7 +182,7 @@
       <img src="https://picsum.photos/200/300" alt="Profile Picture" />
       <h2 id="username"></h2>
       <p>Email: <span id="email"></span></p>
-      <p>Last Login: <span id="last_login"></span></p>      
+      <p>Date Of Joining: <span id="last_login"></span></p>      
       <p>Level: <span id="lvl_roman"></span></p>
       
     
@@ -165,6 +193,7 @@
       </div>
       
       <p>Exp: <span id="exp"></span> / <span id="next_lvl_exp"></span></p>
+      <button id="logout-btn">Logout</button>
     </div>
   </div>
   
@@ -195,7 +224,7 @@ function toRoman(num) {
   
   document.getElementById("username").textContent = user.username || "User";
   document.getElementById("email").textContent = user.email || "user@example.com";
-  document.getElementById("last_login").textContent = user.last_login?.split(":")[0] || "N/A";
+  document.getElementById("last_login").textContent = user.last_login?.split("T")[0] || "N/A";
   
   
   document.getElementById("lvl_roman").textContent = toRoman(level);

@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | FinQuest</title>
     <style>
-        /* Global Styles */
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-          font-family: 'Poppins', sans-serif;
+       
+       body {
+            font-family: Arial, sans-serif; 
+            background-color: #f4f7ff;
+            margin: 0;
+            padding: 0;
+            display: flex; 
+            min-height: 100vh;
         }
-        body {
-          background-color: #f4f5f7;
-          display: flex; /* So sidebar and main can be side-by-side */
-          min-height: 100vh;
-        }
-    
-        /* Sidebar */
         .sidebar {
           width: 250px;
+          min-width: 250px;
           background-color: #fff;
           border-right: 1px solid #e1e1e1;
           padding: 1.5rem;
@@ -54,18 +54,36 @@
         .sidebar h2 {
             font-size: 1.8rem;
             color: #333;
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
             text-align: center;
         }
-    
-        /* Main Content */
-        .main-content {
-          flex: 1;
-          padding: 2rem;
-          overflow-y: auto; /* Scroll if content is long */
+        .nav-links {
+            list-style: none;
+            padding: 0;
         }
-    
-        /* Header / Greeting */
+        
+        .nav-links li {
+            margin: 1rem 0;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            font-size: 1.2rem;
+            color: #333;
+            display: block;
+            padding: 0.8rem;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links .active {
+            background-color: #eef2ff;
+            color: #4b59f7;
+            font-weight: bold;
+        }
+        .main-content {
+            padding: 2rem;
+        }
         .header {
           margin-bottom: 2rem;
         }
@@ -79,21 +97,6 @@
           color: #666;
           margin-bottom: 1rem;
         }
-        .daily-challenge {
-          display: inline-flex;
-          align-items: center;
-          background-color: #eef2ff;
-          color: #4b59f7;
-          padding: 0.5rem 1rem;
-          border-radius: 20px;
-          font-weight: 600;
-          font-size: 0.9rem;
-        }
-        .daily-challenge span + span {
-          margin-left: 0.5rem;
-        }
-    
-        /* Learning Paths */
         .learning-paths {
           margin-bottom: 2rem;
         }
@@ -125,122 +128,6 @@
           margin-bottom: 1rem;
           line-height: 1.4;
         }
-        .progress-bar {
-          background-color: #eee;
-          border-radius: 5px;
-          height: 6px;
-          width: 100%;
-          overflow: hidden;
-        }
-        .progress {
-          background-color: #4b59f7;
-          height: 100%;
-          width: 0%; /* Adjust with JS or dynamically */
-          transition: width 0.3s ease;
-        }
-    
-        /* Achievements & Financial Games */
-        .achievements-financial-games {
-          display: grid;
-          grid-template-columns: 1fr 2fr; /* Achievements narrower than games */
-          gap: 1rem;
-          margin-bottom: 2rem;
-        }
-        .achievements, .financial-games {
-          background-color: #fff;
-          border-radius: 10px;
-          padding: 1rem;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .achievements h3, .financial-games h3 {
-          font-size: 1.25rem;
-          color: #444;
-          margin-bottom: 1rem;
-          font-weight: 600;
-        }
-        .achievements p {
-          font-size: 0.9rem;
-          color: #666;
-        }
-    
-        .games-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-          gap: 1rem;
-        }
-        .game-card {
-          background-color: #eef2ff;
-          color: #4b59f7;
-          padding: 1rem;
-          text-align: center;
-          border-radius: 8px;
-          font-weight: 600;
-          font-size: 0.9rem;
-          transition: background-color 0.2s;
-          cursor: pointer;
-        }
-        .game-card:hover {
-          background-color: #d9deff;
-        }
-    
-        /* Continue Your Learning Journey */
-        .continue-journey {
-          background-color: #fff;
-          border-radius: 10px;
-          padding: 1rem;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-          text-align: center;
-        }
-        .continue-journey h3 {
-          font-size: 1.25rem;
-          color: #444;
-          margin-bottom: 0.5rem;
-          font-weight: 600;
-        }
-        .continue-journey p {
-          font-size: 0.9rem;
-          color: #666;
-          margin-bottom: 1rem;
-        }
-        .continue-journey button {
-          background-color: #4b59f7;
-          color: #fff;
-          border: none;
-          border-radius: 5px;
-          padding: 0.75rem 1.5rem;
-          font-size: 0.9rem;
-          cursor: pointer;
-          transition: background-color 0.2s;
-          font-weight: 600;
-        }
-        .continue-journey button:hover {
-          background-color: #3b49d4;
-        }
-    
-        /* Responsive Adjustments */
-        @media (max-width: 992px) {
-          .achievements-financial-games {
-            grid-template-columns: 1fr; /* Stack vertically on smaller screens */
-          }
-        }
-      </style>
-      <div class="sidebar">
-        <div class="brand">FinQuest</div>
-        <nav>
-          <ul>
-            <li class="active"><a href="/home-guest">Home</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/register">Register</a></li>
-            <li><a href="/about">About</a></li>            
-          </ul>
-        </nav>
-      </div>      
-<head>       
-    <h1>
-    {% block Heading %}
-
-      <style>
-        /* Style for the login-prompt container */
         .login-prompt {
           background: white;
           padding: 20px;
@@ -254,7 +141,7 @@
           justify-content: center;
           flex-direction: column;
           align-items: center;
-          /* max-width: 400px; */
+          max-width: 1350px;
         }
 
         .login-prompt h3 {
@@ -285,58 +172,53 @@
           transform: scale(1.05);
         }
 
-
-      </style>
-
-      <title>Guest Home | Flask App</title>
-
-    {% endblock %}   
-    </h1>
+        @media (max-width: 992px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
     
-    {% block Body %}
+    <div class="sidebar">
+      <h2>FinQuest</h2>
+      <ul class="nav-links">
+          <li><a href="/home-guest" class="active">Home</a></li>
+          <li><a href="/login">Login</a></li>
+          <li><a href="/register">Register</a></li>
+          <li><a href="/about">About</a></li>
+      </ul>
+    </div>
+
     <div class="main-content">
-      <!-- Header -->
-      <div class="header">
-        <h2>Welcome! <span style="font-size:1.2rem;">👋</span></h2>
-        <p>Ready to begin your financial journey? Please log in to access personalized features.</p>
-      </div>
-  
-      <!-- Learning Paths (without progress or personalized content) -->
-      <div class="learning-paths">
-        <h3>Learning Paths</h3>
-        <div class="cards">
-          <div class="card">
-            <h4>Investing Essentials</h4>
-            <p>Learn how to grow your money through stocks, bonds, and more.</p>
-          </div>
-          <div class="card">
-            <h4>Budgeting Mastery</h4>
-            <p>Master your monthly expenses and savings strategies.</p>
-          </div>
-          <div class="card">
-            <h4>Credit Management</h4>
-            <p>Build and maintain a healthy credit score.</p>
+        <div class="header">
+          <h2>Welcome! <span style="font-size:1.2rem;">👋</span></h2>
+          <p>Ready to begin your financial journey? Please log in to access personalized features.</p>
+        </div>
+        <div class="learning-paths">
+          <h3>Learning Paths</h3>
+          <div class="cards">
+            <div class="card">
+              <h4>Investing Essentials</h4>
+              <p>Learn how to grow your money through stocks, bonds, and more.</p>
+            </div>
+            <div class="card">
+              <h4>Budgeting Mastery</h4>
+              <p>Master your monthly expenses and savings strategies.</p>
+            </div>
+            <div class="card">
+              <h4>Credit Management</h4>
+              <p>Build and maintain a healthy credit score.</p>
+            </div>
           </div>
         </div>
-      </div>
-  
-
-  
-      <!-- Login Prompt -->
-      <div class="login-prompt">
-        <h3>Log In to Continue Your Journey</h3>
-        <p>Sign up or log in to access personalized lessons and track your progress.</p>
-        <button onclick="window.location.href='/login'">Log In</button>
-      </div>
-  </div>
-  
-
-    
-    {% endblock %}
-          
+        <div class="login-prompt">
+          <h3>Log In to Continue Your Journey</h3>
+          <p>Sign up or log in to access personalized lessons and track your progress.</p>
+          <button onclick="window.location.href='/login'">Log In</button>
+        </div>
+    </div>
 </body>
-
-</html> 
+</html>
