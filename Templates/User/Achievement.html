@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements - FinQuest</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background-color: #f4f5f7;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #fff;
+            border-right: 1px solid #e1e1e1;
+            padding: 1.5rem;
+        }
+        .sidebar .brand {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: #4b4b4b;
+        }
+        .sidebar nav ul {
+            list-style: none;
+        }
+        .sidebar nav ul li {
+            margin-bottom: 1rem;
+        }
+        .sidebar nav ul li a {
+            text-decoration: none;
+            color: #555;
+            font-size: 1rem;
+            padding: 0.5rem 0;
+            display: block;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .sidebar nav ul li a:hover {
+            background-color: #f0f0f0;
+        }
+        .sidebar nav ul li.active a {
+            background-color: #eef2ff;
+            color: #4b59f7;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        /* Achievements Section */
+        .achievements-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .achievements-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        .achievement-card {
+            background: #eef2ff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .achievement-card h3 {
+            color: #4b59f7;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .achievement-card p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .completed {
+            color: green;
+            font-weight: bold;
+        }
+        .incomplete {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="brand">FinQuest</div>
+        <nav>
+            <ul>
+                <li><a href="/home">Dashboard</a></li>
+                <li><a href="/learningpaths">Learning Paths</a></li>
+                <li><a href="/recommendations">Recommendations</a></li>
+                <li class="active"><a href="/achievements">Achievements</a></li>
+                <li><a href="/games">Games</a></li>
+                <li><a href="/profile">Profile</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Achievements Section -->
+    <div class="main-content">
+        <div class="achievements-container">
+            <h2>Your Achievements</h2>
+
+            {% if user_achievements %}
+                {% for user_achievement, achievement in user_achievements %}
+                    <div class="achievement-card">
+                        <h3>{{ achievement.name }}</h3>
+                        <p>{{ achievement.description }}</p>
+                        <p>Status: 
+                            <span class="{% if user_achievement.completed %}completed{% else %}incomplete{% endif %}">
+                                {% if user_achievement.completed %}✅ Completed{% else %}❌ Incomplete{% endif %}
+                            </span>
+                        </p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No achievements earned yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>
