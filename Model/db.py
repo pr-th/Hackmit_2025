@@ -29,6 +29,7 @@ class User(db.Model):
 class Achievement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
+    description = db.Column(db.Text, nullable=False)
     users = db.relationship('UserAchievement', back_populates='achievement', lazy=True)
 
 class UserAchievement(db.Model):
@@ -40,6 +41,24 @@ class UserAchievement(db.Model):
     achievement = db.relationship('Achievement', back_populates='users')
 
 
+def insert_default_achievements():
+    from app import app     
+    with app.app_context():  
+        default_achievements = [
+            {"name": "First Login", "description": "Join the Journey."},
+            {"name": "First Steps", "description": "Complete your first chapter."},
+            {"name": "Budget Explorer", "description": "Create your first budget plan."},
+            {"name": "Savings Starter", "description": "Set a savings goal."},
+            {"name": "Credit Curious", "description": "Learn the basics of credit scores."},
+        ]
+
+        for achievement in default_achievements:
+            existing = Achievement.query.filter_by(name=achievement["name"]).first()
+            if not existing:
+                new_achievement = Achievement(name=achievement["name"], description=achievement["description"])
+                db.session.add(new_achievement)
+
+        db.session.commit()
 
 
 

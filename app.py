@@ -1,12 +1,12 @@
 from flask import Flask,render_template,request, session,flash,redirect,url_for
-from Model.db import db,User, Achievement
+from Model.db import db,User, Achievement, UserAchievement,insert_default_achievements
 import os
 
 
 app =Flask(__name__)
 app.secret_key = "your_secret_key"
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))   
 DB_PATH = os.path.join(BASE_DIR, "Model", "site.db") 
 
 app.config['SQLALCHEMY_DATABASE_URI'] =  f'sqlite:///{DB_PATH}'
@@ -16,6 +16,7 @@ db.init_app(app)
 # hey
 with app.app_context():
     db.create_all()
+    insert_default_achievements()
 
 def get_logged_in_user():
     if "userid" not in session:
@@ -45,6 +46,12 @@ def login():
         user = User.query.filter_by(username=u).first()
         if user and user.password == p:  
             session["userid"] = user.id
+            ua = UserAchievement.query.filter_by(user_id=user.id,achievement_id = 5).first()
+            if not ua:
+                achievement = Achievement.query.filter_by(name="First Login").first()
+                ua = UserAchievement(user_id=user.id,achievement= achievement , completed = True)
+                db.session.add(ua)
+                db.session.commit()
             return redirect(url_for("userhomepage"))
         return redirect(url_for("login"))
     return render_template("Login.html")
@@ -66,14 +73,28 @@ def register():
         flash("Username already exists! Try another one.", "danger")
     return render_template("Register.html")   
 
-@app.route('/tipsandtricks')
-def tipsandtricks():
-    return render_template("User/tipsandtricks.html")   
-
 @app.route('/profile')
 def profile():
-    user = get_logged_in_user()
+    user = get_logged_in_user()    
     return render_template("User/profile.html",user=user.to_dict())
+
+
+@app.route('/achievements')
+def achievements():
+    user=get_logged_in_user()
+    user_achievements = (
+        db.session.query(UserAchievement, Achievement)
+        .join(Achievement, UserAchievement.achievement_id == Achievement.id)
+        .filter(UserAchievement.user_id == user.id)
+        .all()
+    )
+    return render_template("User/Achievement.html", user_achievements = user_achievements )
+
+@app.route('/logout')
+def logout():
+    session.clear()  
+    return redirect(url_for('login')) 
+
 
 if __name__ == "__main__":
     app.run(debug = True)
