@@ -8,7 +8,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = r'sqlite:///C:\Users\mahaj\OneDrive\Desk
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
-
+# hey
 with app.app_context():
     db.create_all()
 
