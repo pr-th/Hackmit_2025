@@ -98,7 +98,7 @@
         }
         .cards {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+          grid-template-columns: repeat(3, 1fr); /* Three equal columns */
           gap: 1rem;
         }
         .card {
@@ -221,10 +221,10 @@
         <div class="brand">FinQuest</div>
         <nav>
           <ul>
-            <li class="active"><a href="#">Home</a></li>
+            <li class="active"><a href="/home-guest">Home</a></li>
             <li><a href="/login">Login</a></li>
             <li><a href="/register">Register</a></li>
-            <li><a href="#">About</a></li>            
+            <li><a href="/about">About</a></li>            
           </ul>
         </nav>
       </div>      
@@ -232,7 +232,56 @@
     <h1>
     {% block Heading %}
 
+      <style>
+        /* Style for the login-prompt container */
+        .login-prompt {
+          background: white;
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+          text-align: center;
+          margin: 30px auto;
+          width: 100%;
+          height: 300px;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          align-items: center;
+          /* max-width: 400px; */
+        }
 
+        .login-prompt h3 {
+          font-size: 1.6rem;
+          color: #333;
+          margin-bottom: 10px;
+        }
+
+        .login-prompt p {
+          font-size: 1rem;
+          color: #666;
+          margin-bottom: 20px;
+        }
+
+        .login-prompt button {
+          background: #4b59f7;
+          color: white;
+          padding: 12px 20px;
+          border: none;
+          border-radius: 5px;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: background 0.3s, transform 0.2s;
+        }
+
+        .login-prompt button:hover {
+          background: #3b49d4;
+          transform: scale(1.05);
+        }
+
+
+      </style>
+
+      <title>Guest Home | Flask App</title>
 
     {% endblock %}   
     </h1>
@@ -241,7 +290,57 @@
 <body>
     
     {% block Body %}
-   
+    <div class="main-content">
+      <!-- Header -->
+      <div class="header">
+        <h2>Welcome! <span style="font-size:1.2rem;">👋</span></h2>
+        <p>Ready to begin your financial journey? Please log in to access personalized features.</p>
+      </div>
+  
+      <!-- Learning Paths (without progress or personalized content) -->
+      <div class="learning-paths">
+        <h3>Learning Paths</h3>
+        <div class="cards">
+          <div class="card">
+            <h4>Investing Essentials</h4>
+            <p>Learn how to grow your money through stocks, bonds, and more.</p>
+          </div>
+          <div class="card">
+            <h4>Budgeting Mastery</h4>
+            <p>Master your monthly expenses and savings strategies.</p>
+          </div>
+          <div class="card">
+            <h4>Credit Management</h4>
+            <p>Build and maintain a healthy credit score.</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Achievements & Financial Games -->
+      <div class="achievements-financial-games">
+        <div class="achievements">
+          <h3>Achievements</h3>
+          <p>Track your milestones and badges after logging in.</p>
+        </div>
+        <div class="financial-games">
+          <h3>Financial Games</h3>
+          <div class="games-grid">
+            <div class="game-card">Stock Simulator</div>
+            <div class="game-card">Budget Challenge</div>
+            <div class="game-card">Credit Defender</div>
+            <div class="game-card">Crypto Adventure</div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Login Prompt -->
+      <div class="login-prompt">
+        <h3>Log In to Continue Your Journey</h3>
+        <p>Sign up or log in to access personalized lessons and track your progress.</p>
+        <button onclick="window.location.href='/login'">Log In</button>
+      </div>
+  </div>
+  
 
     
     {% endblock %}

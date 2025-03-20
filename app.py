@@ -3,7 +3,8 @@ from Model.db import db,User, Achievement
 
 app =Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/prthm/OneDrive/Desktop/VS/Hackmit_2025/Model/site.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = r'sqlite:///C:\Users\mahaj\OneDrive\Desktop\Hackmit_2025\Model\site.db'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
@@ -12,6 +13,7 @@ with app.app_context():
     db.create_all()
 
 @app.route('/')
+@app.route('/home-guest')
 def homepage():
     return render_template("Home.html")
 
