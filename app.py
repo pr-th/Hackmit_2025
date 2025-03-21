@@ -37,6 +37,10 @@ def userhomepage():
 def about():
     return render_template("About.html")
 
+@app.route('/game1')
+def game1():
+    return render_template("User/gameOfLife.html")
+
 
 @app.route('/login',methods = ['GET','POST'])
 def login():
