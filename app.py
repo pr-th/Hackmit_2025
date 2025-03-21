@@ -49,7 +49,7 @@ def login():
         user = User.query.filter_by(username=u).first()
         if user and user.password == p:  
             session["userid"] = user.id
-            ua = UserAchievement.query.filter_by(user_id=user.id,achievement_id = 5).first()
+            ua = UserAchievement.query.filter_by(user_id=user.id,achievement_id = 1).first()
             if not ua:
                 achievement = Achievement.query.filter_by(name="First Login").first()
                 ua = UserAchievement(user_id=user.id,achievement= achievement , completed = True)
