@@ -15,11 +15,10 @@
       font-family: 'Poppins', sans-serif;
     }
     body {
-      background-color: #f4f5f7;
-      display: flex; /* So sidebar and main can be side-by-side */
+      background: #f4f5f7; /* Light gray background */
+      display: flex;      /* Place sidebar and main content side by side */
       min-height: 100vh;
     }
-
     a {
       text-decoration: none;
     }
@@ -61,33 +60,189 @@
       font-weight: 600;
     }
 
-    /* Main Content */
+    /* Main Content Container */
     .main-content {
-      flex: 1;
+      flex: 1;                    /* Take remaining horizontal space */
+      display: flex;
+      flex-direction: column;
+      align-items: center;        /* Center the card/info horizontally */
       padding: 2rem;
-      overflow-y: auto; /* Scroll if content is long */
+      margin: 1rem;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;           /* Scroll if content is long */
     }
 
+    /* Balance Card */
+    .balance-card {
+      width: 520px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 1rem;
+      background: #1e1e1e;
+      color: #fff;
+      position: relative;
+      overflow: hidden; /* For rounding edges on background image */
+      background-image: url("static/creditCard.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.95;
+      min-height: fit-content;
+    }
+    .balance-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 1rem;
+      z-index: 0;
+    }
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 1rem;
+    }
+    .card-top .brand {
+      font-size: 1rem;
+      font-weight: 600;
+      background: #ff5f00; /* Example MasterCard color */
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.5rem;
+      margin-right: 0.5rem;
+    }
+    .card-top .masked-digits {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-right: auto;
+      margin-left: 0.5rem;
+    }
+    .card-top .expiry {
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+    .balance-label {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-bottom: 0.25rem;
+      position: relative;
+      z-index: 1;
+    }
+    .balance-amount {
+      position: relative;
+      z-index: 1;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Additional Info */
+    .additional-info {
+      width: 520px;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .additional-info h2,
+    .additional-info p {
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+
+    /* Buttons */
     button {
-    margin: 5px;
-    padding: 8px 12px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
+      margin: 7px;
+      padding: 9px 13px;
+      font-size: 1.1rem;
+      border: none; 
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+    }
     button:hover {
-        background-color: #0056b3;
+      background-color: #0056b3;
     }
 
-   
     
+    /* Help Icon */
+    #helpBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    
+    /* Modal Styles */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+      position: relative;
+    }
+    .modal-content p {
+      margin-bottom: 1.5rem;
+    }
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover,
+    .close:focus {
+      color: #000;
+    }
+
+    /* Walking man */
+    #walkingMan {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 50px;
+    transition: left 0.5s ease-in-out;
+  }
   </style>
 </head>
 <body>  
-
+  <!-- Sidebar on the left -->
   <div class="sidebar">
     <div class="brand">FinQuest</div>
     <nav>
@@ -102,24 +257,121 @@
     </nav>
   </div>
 
-    <div>
-        <h2 id="stage">Life Stage: College</h2>
-        <p id="age">Age: 18</p>
-        <p id="income">Income: $0</p>
-        <p id="debt">Debt: $0</p>
-        <p id="job">Job: None</p>
-        <p id="balance">Balance: $1000</p>
-        <p id="passiveIncome">Passive Income: $0</p>
-
-
-        <div id="choices"></div>
+  <!-- Main content on the right -->
+  <div class="main-content">
+    <!-- Balance Card -->
+    <div class="balance-card">
+      <div class="card-top">
+        <div class="brand">Master</div>
+        <div class="masked-digits">**** 7439</div>
+        <div class="expiry">05/26</div>
+      </div>
+      <div class="balance-label">Balance:</div>
+      <div class="balance-amount" id="balance">$1000</div>
     </div>
 
+    <!-- Additional Info Container -->
+    <div class="additional-info">
+      <h2 id="stage">Life Stage: College</h2>
+      <p id="age">Age: 18</p>
+      <p id="income">Income: $0</p>
+      <p id="debt">Debt: $0</p>
+      <p id="job">Job: None</p>
+      <p id="passiveIncome">Passive Income: $0</p>
+    </div>
 
-        
+    <!-- Choices and House Options -->
+    <div id="choices"></div>
+    <div id="houseOptions" style="display: none; height: 100%;">
+      <button onclick="buyHouse(200000, 3000)">
+        <img src="{{ url_for('static', filename='costlyHouse.png') }}" 
+             alt="Costly House" width="100px" height="100%">
+        <br>Costly House<br>💰 Debt: $200,000<br>💵 Income: +$3,000 
+      </button>
+      <button onclick="buyHouse(100000, 1500)">
+        <img src="{{ url_for('static', filename='cheapHouse.png') }}" 
+             alt="Cheap House" width="100px">
+        <br>Cheap House<br>💰 Debt: $100,000<br>💵 Income: +$1,500
+      </button>
+    </div>
 
+    <img id="walkingMan" src="static/young.png" alt="hi">
+  </div>
+
+  <!-- Help Icon -->
+  <button id="helpBtn">?</button>
+
+  <!-- Help Modal -->
+  <div id="helpModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h2>How to Play?</h2>
+      <p>
+        Every turn, you get a chance to choose one of three actions. Once you select an action,
+        its effects occur and <strong>1 year passes</strong> before your next turn!
+      </p>
+      <p>
+        <strong>Your Life Journey:</strong><br><br>
+        <strong>🎓 College Stage</strong><br>
+        • <strong>Take Student Loan</strong> – Immediately <strong>reduces your balance by $10,000</strong>. 💸<br>
+        • <strong>Work Part Time</strong> – Random job: Pizza Delivery ($500), Intern ($800), etc. 🍕👩‍💻<br>
+        • <strong>Live Frugally</strong> – Subtracts <strong>$500</strong> for basic needs. 🥪
+      </p>
+      <p>
+        <strong>💼 First Job Stage</strong><br>
+        • <strong>Save Aggressively</strong> – Deducts <strong>$1,000</strong> for basic needs. 💡<br>
+        • <strong>Invest in Stock</strong> – High risk, high reward. 📈📉<br>
+        • <strong>Work Full Time</strong> – E.g., Freelance Dev ($1,500), Uber Driver ($1,200), etc. 👨‍💻🚗
+      </p>
+      <p>
+        <strong>💍 Marriage Stage</strong><br>
+        • <strong>Buy a House</strong> – Choose expensive or cheap, can boost income long-term. 🏠💵<br>
+        • <strong>Rent and Save</strong> – Subtracts <strong>$2,000</strong> each turn. 🏡💼<br>
+        • <strong>Luxury Life</strong> – Subtracts <strong>$3,000</strong> for the high life. 💎🛍️
+      </p>
+      <p>
+        <strong>🌅 Retirement Stage</strong><br>
+        • <strong>Rely on Savings</strong> – Subtracts <strong>$3,000</strong> for old-age expenses. 🏦<br>
+        • <strong>Invest in Passive Income</strong> – Invest <strong>30%</strong> of balance, earn <strong>10%</strong> yearly. 💡📈<br>
+        • <strong>Work Part Time</strong> – E.g., Consultant ($1,000), Bookstore Clerk ($600). ✍️💼
+      </p>
+      <p>
+        <strong>Remember:</strong> Each choice affects your finances and represents one full year.
+        Plan ahead and enjoy FinQuest! 🎉
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Help Modal Logic
+    const helpBtn = document.getElementById("helpBtn");
+    const helpModal = document.getElementById("helpModal");
+    const closeModal = document.getElementById("closeModal");
+
+    helpBtn.addEventListener("click", () => {
+      helpModal.style.display = "block";
+    });
+
+    closeModal.addEventListener("click", () => {
+      helpModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+      if (event.target === helpModal) {
+        helpModal.style.display = "none";
+      }
+    });
+
+    window.imagePaths = [
+      "{{ url_for('static', filename='young.png') }}",
+      "{{ url_for('static', filename='job.png') }}",
+      "{{ url_for('static', filename='marraige.png') }}",
+      "{{ url_for('static', filename='retirement.png') }}"
+    ];
+    
+  </script>
+
+  <!-- Your game logic JS -->
   <script src="{{ url_for('static', filename='gameOfLife.js') }}"></script>
-
-
 </body>
 </html>

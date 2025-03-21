@@ -3,7 +3,7 @@ let player = {
     stage: "College",
     income: 0,
     savings: 0,
-    balance: 1000, 
+    balance: 10000, 
     debt: 0,
     expenses: 0,
     choicesMade: 0,
@@ -92,8 +92,9 @@ function startGame() {
 
 function triggerRandomEvent() {
     const event = events[Math.floor(Math.random() * events.length)];
-    player.savings += event.impact;
+    player.balance += event.impact; // Apply directly to balance
     alert(event.message);
+    updateUI();
 }
 
 function makeChoice(choice) {
@@ -122,55 +123,106 @@ function makeChoice(choice) {
 }
 
 function applyChoiceEffects(choice) {
-    if (choice === "Take a student loan") player.debt += 5000;
-    if (choice === "Live frugally") player.expenses -= 200;
-    if (choice === "Save aggressively") player.savings += 1000;
-    if (choice === "Invest in stocks") triggerRandomEvent();
+    if (choice === "Take a student loan") {
+        player.debt += 10000;
+        player.balance -= 10000; // Deduct loan amount immediately
+    }
+    if (choice === "Live frugally") {
+        player.balance -= 500;
+    }
+    if (choice === "Save aggressively") {
+        player.balance -= 1000;
+    }
+    if (choice === "Invest in stocks") {
+        triggerRandomEvent();
+        // Let it fall through so that the general update still occurs.
+    }
     if (choice === "Buy a house") {
-        player.debt += 100000;
-        player.income += 1000; 
+        showHouseOptions();
+        return; // Let the house selection handle its own update.
     }
-    if (choice === "Rent and save") player.savings += 2000;
-    if (choice === "Luxury lifestyle") player.expenses += 3000;
-    if (choice === "Work part-time" || choice === "Work full-time") assignPartTimeJob();
-    if (choice === "Invest in passive income") investInPassiveIncome();
-
-    updateBalance();
-}
-
-function investInPassiveIncome() {
-    let investment = player.balance * 0.3;
-
-    if (investment > 0) {
-        player.balance -= investment; // Deduct 30% of balance
-        player.passiveIncome += investment * 0.05; // Set yearly passive income
+    if (choice === "Rent and save") {
+        player.balance -= 2000;
     }
-}
+    if (choice === "Luxury lifestyle") {
+        player.balance -= 3000;
+    }
+    if (choice === "Work part-time" || choice === "Work full-time") {
+        assignPartTimeJob();
+        // Do NOT return; allow the general update below to add the yearly income.
+    }
+    if (choice === "Invest in passive income") {
+        investInPassiveIncome();
+    }
+    if (choice === "Rely on savings") {
+        player.balance -= 3000;
+    }
 
-
-function updateBalance() {
-    player.balance += (player.income * 12) + player.passiveIncome - player.debt - player.expenses;
-
+    // General update: simulate a year's progress.
+    player.balance += (player.income * 12) + player.passiveIncome - player.expenses;
+    
+    // Check for bankruptcy immediately.
     if (player.balance < 0) {
         alert("Game Over! You went bankrupt! 😢");
         resetGame();
         return;
     }
-
+    
     updateUI();
+    moveWalkingMan();
+}
+
+
+
+
+function showHouseOptions() {
+    document.getElementById("houseOptions").style.display = "block";
+}
+
+function buyHouse(debt, incomeIncrease) {
+    player.debt += debt; 
+    player.balance -= debt; // Deduct house cost immediately
+    player.income += incomeIncrease; // Increase income if applicable
+
+    // Hide house selection buttons after selection
+    document.getElementById("houseOptions").style.display = "none";
+    
+    updateUI();
+    moveWalkingMan();
+    // Immediately check if balance is negative
+    if (player.balance < 0) {
+        alert("Game Over! You went bankrupt! 😢");
+        resetGame();
+        return;
+    }
+    
+}
+
+
+
+function investInPassiveIncome() {
+    let investment = player.balance * 0.3;
+    
+    if (investment > 0) {
+        player.balance -= investment; // Deduct investment amount immediately
+        player.passiveIncome += investment * 0.1; // Add yearly passive income
+    }
 }
 
 
 function resetGame() {
-    player.age = 18;
+    player.age = 17;
     player.stage = "College";
     player.income = 0;
     player.savings = 0;
-    player.balance = 1000;
+    player.balance = 10000;
     player.debt = 0;
     player.expenses = 0;
-    player.choicesMade = 0;
+    player.choicesMade = 0; // ✅ Reset to 0 (integer)
     player.currentJob = "";
+    player.passiveIncome = 0;
+
+    choicesMade = 0; // ✅ Also reset global choicesMade counter
 
     updateUI();
 }
@@ -183,11 +235,13 @@ function assignPartTimeJob() {
     let jobs = partTimeJobs[player.stage];
     let randomJob = jobs[Math.floor(Math.random() * jobs.length)];
 
-    player.income += randomJob.income;
+    // Set the new salary and job details
+    player.income = randomJob.income;
     player.currentJob = `${randomJob.name} ($${randomJob.income})`;
 
     updateUI();
 }
+
 
 
 
@@ -196,17 +250,13 @@ function nextStage() {
 
     if (player.stage === "College") {
         player.stage = "First Job";
-        player.income += 3000;
-        player.debt += 5000;
     } 
     else if (player.stage === "First Job") {
         player.stage = "Marriage";
-        player.income += 5000;
-        player.debt += 10000;
     } 
     else if (player.stage === "Marriage") {
         player.stage = "Retirement";
-        player.income = 0;
+        player.income = 0; 
         player.currentJob = ""; 
     } 
     else {
@@ -216,7 +266,8 @@ function nextStage() {
 
     player.age = stageAges[player.stage];
     player.choicesMade = {};
-    updateUI();
+    
+    updateUI(); // UI updates properly
 }
 
 
@@ -248,4 +299,27 @@ function updateUI() {
 
         choicesContainer.appendChild(button);
     });
+}
+
+
+// Walking Man Mechanics
+
+let progressPercent = 0;  
+let stepCount = 0;        
+let stageIndex = 0;      
+
+const walkingMan = document.getElementById("walkingMan");
+const images = window.imagePaths; 
+
+function moveWalkingMan() {
+    progressPercent += 5;
+    walkingMan.style.left = progressPercent + "%";
+    stepCount++;
+    if (stepCount >= 5) {
+        stepCount = 0;
+        if (stageIndex < images.length - 1) {
+        stageIndex++;
+            walkingMan.src = images[stageIndex];
+        }
+    }
 }
