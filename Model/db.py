@@ -68,68 +68,38 @@ class Article(db.Model):
     interactions = db.relationship('ArticleInteraction', back_populates='article', lazy=True)
 
 def insert_finance_articles():
-    from app import app  
-    with app.app_context():  
+    from app import app
+    with app.app_context():
         finance_articles = [
             {
-                "title": "Understanding Compound Interest",
-                "content": "Compound interest is the interest on interest. It allows your savings to grow exponentially over time.",
-                "risk_level": 1,
-                "exp": 1
-            },
-            {
-                "title": "How to Create a Monthly Budget",
-                "content": "A monthly budget helps you track income and expenses. Use the 50/30/20 rule for efficient budgeting.",
-                "risk_level": 1,
-                "exp": 1
-            },
-            {
-                "title": "Introduction to Stock Market Investing",
-                "content": "Stocks represent ownership in a company. Learn the basics of investing, risk management, and market trends.",
+                "title": "Evaluating Investment Strategies: S&P 500 vs. Individual Stocks",
+                "content": "Investors often debate between investing in index funds like the S&P 500 or selecting individual stocks. While individual stocks such as Chevron and JPMorgan Chase have shown impressive returns in recent years, relying solely on them carries higher risks due to market volatility. Diversifying investments across various sectors and asset classes can mitigate risks and promote long-term wealth accumulation.",
                 "risk_level": 3,
                 "exp": 2
             },
             {
-                "title": "The Importance of an Emergency Fund",
-                "content": "An emergency fund acts as a financial cushion, covering unexpected expenses like medical bills or job loss.",
-                "risk_level": 1,
-                "exp": 1
-            },
-            {
-                "title": "Understanding Credit Scores",
-                "content": "A credit score impacts loan approvals and interest rates. Learn how to maintain a high score and manage debt.",
+                "title": "Global Diversification: Investing Beyond Your Home Country",
+                "content": "Diversifying investments across different geographical regions can reduce portfolio risk. While domestic markets may feel more familiar, international markets, including emerging economies, offer unique growth opportunities. However, investors should be mindful of political and economic challenges in these regions and consider global funds that cover diverse sectors.",
                 "risk_level": 2,
                 "exp": 2
             },
             {
-                "title": "Basics of Cryptocurrency Investing",
-                "content": "Cryptocurrencies are digital assets that use blockchain technology. Understand their risks and potential rewards.",
-                "risk_level": 4,
+                "title": "Insights from Top Fund Managers: Navigating Market Volatility",
+                "content": "Recent surveys indicate that fund managers are adjusting their portfolios in response to market volatility, reducing allocations in certain regions while exploring opportunities in others. This underscores the importance for individual investors to stay informed about market trends and consider professional insights when making investment decisions.",
+                "risk_level": 2,
                 "exp": 3
             },
             {
-                "title": "How to Start Investing in Mutual Funds",
-                "content": "Mutual funds pool money from investors to buy securities. They offer diversification and professional management.",
+                "title": "Long-Term Investment Strategies: Lessons from Industry Leaders",
+                "content": "Focusing on long-term investment plans rather than short-term market movements is crucial. Industry leaders advise against panic selling during market downturns and recommend maintaining a balanced portfolio to manage risk. Adapting investment strategies based on personal circumstances and simplifying complex ideas can lead to more effective wealth management.",
                 "risk_level": 2,
-                "exp": 2
+                "exp": 3
             },
             {
-                "title": "Real Estate Investment Strategies",
-                "content": "Real estate can generate passive income and long-term wealth. Learn about rental properties, REITs, and market trends.",
+                "title": "The Role of Artificial Intelligence in Modern Investing",
+                "content": "Artificial Intelligence (AI) is transforming investment strategies by providing advanced tools for market analysis and decision-making. Companies investing in AI technologies are gaining recognition for their capabilities, leading to increased investor confidence. Staying updated on AI advancements can offer investors new opportunities in the evolving financial landscape.",
                 "risk_level": 3,
                 "exp": 3
-            },
-            {
-                "title": "Retirement Planning: When to Start?",
-                "content": "Starting early allows your investments to grow. Consider retirement accounts like 401(k)s and IRAs.",
-                "risk_level": 2,
-                "exp": 3
-            },
-            {
-                "title": "High-Risk, High-Reward Investments",
-                "content": "Venture capital, options trading, and forex are high-risk but offer potential high returns. Understand before investing.",
-                "risk_level": 5,
-                "exp": 4
             }
         ]
 
@@ -145,6 +115,7 @@ def insert_finance_articles():
                 db.session.add(new_article)
 
         db.session.commit()
+
 
 class ArticleInteraction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
