@@ -1,5 +1,8 @@
 from flask import Flask,render_template,request, session,flash,redirect,url_for
-from Model.db import db,User, Achievement, UserAchievement,insert_default_achievements
+from Model.db import db,User, Achievement, UserAchievement,insert_default_achievements,Article,ArticleInteraction,update_article_stats,insert_finance_articles
+from sklearn.neighbors import NearestNeighbors
+import numpy as np
+from flask_apscheduler import APScheduler
 import os
 
 
@@ -13,10 +16,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] =  f'sqlite:///{DB_PATH}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
-# hey
 with app.app_context():
     db.create_all()
     insert_default_achievements()
+    insert_finance_articles()
 
 def get_logged_in_user():
     if "userid" not in session:
@@ -95,6 +98,80 @@ def logout():
     session.clear()  
     return redirect(url_for('login')) 
 
+@app.route('/articles')
+def article():
+    user=get_logged_in_user()    
+    all_articles = Article.query.all()
+
+    article_data = [(article.id, article.risk_level, article.exp) for article in all_articles]
+    article_ids, risk_levels, exp_values = zip(*article_data) if article_data else ([], [], [])
+    
+    recommended_articles = []
+    if article_data:
+        X = np.array(list(zip(risk_levels, exp_values)))  
+        
+        knn = NearestNeighbors(n_neighbors=min(5, len(X)), metric="euclidean")
+        knn.fit(X)
+                
+        distances, indices = knn.kneighbors([[user.risk_level, user.exp]])
+        recommended_articles = [Article.query.get(article_ids[i]) for i in indices[0]]
+
+    return render_template("User/article.html", all_articles=all_articles, recommended_articles=recommended_articles)
+
+@app.route('/article/<int:article_id>')
+def view_article(article_id):
+    article = Article.query.get_or_404(article_id)
+    user =get_logged_in_user()    
+    
+    user_interaction = None
+    if user:
+        user_interaction = ArticleInteraction.query.filter_by(user_id=user.id, article_id=article_id).first()
+    
+    return render_template("User/article_detail.html", article=article, user_interaction=user_interaction)
+
+@app.route('/article/<int:article_id>/like', methods=['POST'])
+def like_article(article_id):
+    user = get_logged_in_user()    
+    if user:
+        interaction = ArticleInteraction.query.filter_by(user_id=user.id, article_id=article_id).first()
+        article = Article.query.get(article_id)
+        total_interactions = ArticleInteraction.query.filter_by(user_id=user.id).count()
+        user.risk_level = (user.risk_level * total_interactions + article.risk_level) / (total_interactions + 1)
+        db.session.commit()
+        if not interaction:
+            new_interaction = ArticleInteraction(user_id=user.id, article_id=article_id, liked=True, user_risk_level=user.risk_level, user_exp=user.exp)
+            db.session.add(new_interaction)
+        else:
+            interaction.liked = True  
+        db.session.commit()
+    return redirect(url_for('view_article', article_id=article_id))
+
+@app.route('/article/<int:article_id>/dislike', methods=['POST'])
+def dislike_article(article_id):
+    user = get_logged_in_user()    
+    if user:
+        interaction = ArticleInteraction.query.filter_by(user_id=user.id, article_id=article_id).first()
+        if not interaction:
+            new_interaction = ArticleInteraction(user_id=user.id, article_id=article_id, liked=False, user_risk_level=user.risk_level, user_exp=user.exp)
+            db.session.add(new_interaction)
+        else:
+            interaction.liked = False
+        db.session.commit()
+    return redirect(url_for('view_article', article_id=article_id))
+
+
 
 if __name__ == "__main__":
     app.run(debug = True)
+
+scheduler = APScheduler()
+
+@scheduler.task('interval', hours=1)
+def scheduled_update():
+    with app.app_context():
+        articles = Article.query.all()
+        for article in articles:
+            update_article_stats(article.id)
+
+scheduler.init_app(app)
+scheduler.start()
