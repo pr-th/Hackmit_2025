@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FinQuest Dashboard</title>
+  <!-- Example font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" />
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background-color: #f4f5f7;
+      display: flex; /* So sidebar and main can be side-by-side */
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background-color: #fff;
+      border-right: 1px solid #e1e1e1;
+      padding: 1.5rem;
+    }
+    .sidebar .brand {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      color: #4b4b4b;
+    }
+    .sidebar nav ul {
+      list-style: none;
+    }
+    .sidebar nav ul li {
+      margin-bottom: 1rem;
+    }
+    .sidebar nav ul li a {
+      text-decoration: none;
+      color: #555;
+      font-size: 1rem;
+      padding: 0.5rem 0;
+      display: block;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+    .sidebar nav ul li a:hover {
+      background-color: #f0f0f0;
+    }
+    .sidebar nav ul li.active a {
+      background-color: #eef2ff; /* Light highlight */
+      color: #4b59f7;           /* Example accent color */
+      font-weight: 600;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto; /* Scroll if content is long */
+    }
+
+    button {
+    margin: 5px;
+    padding: 8px 12px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+   
+    
+  </style>
+</head>
+<body>  
+
+  <div class="sidebar">
+    <div class="brand">FinQuest</div>
+    <nav>
+      <ul>
+        <li class="active"><a href="/home">Dashboard</a></li>
+        <li><a href="/learningpaths">Learning Paths</a></li>
+        <li><a href="/recomendations">Recomendations</a></li>
+        <li><a href="/achievements">Achievements</a></li>
+        <li><a href="/games">Games</a></li>
+        <li><a href="/profile">Profile</a></li>
+      </ul>
+    </nav>
+  </div>
+
+    <div>
+        <h2 id="stage">Life Stage: College</h2>
+        <p id="age">Age: 18</p>
+        <p id="income">Income: $0</p>
+        <p id="debt">Debt: $0</p>
+        <p id="job">Job: None</p>
+        <p id="balance">Balance: $1000</p>
+        <p id="passiveIncome">Passive Income: $0</p>
+
+
+        <div id="choices"></div>
+    </div>
+
+
+        
+
+  <script src="{{ url_for('static', filename='gameOfLife.js') }}"></script>
+
+
+</body>
+</html>
