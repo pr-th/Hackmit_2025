@@ -6,10 +6,12 @@ let player = {
     balance: 10000, 
     debt: 0,
     expenses: 0,
-    choicesMade: 0,
+    choicesMade: {},
     currentJob: "",
-    passiveIncome: 0 // New attribute
+    salary: 0,
+    passiveIncome: 0
 };
+
 
 
 
@@ -21,8 +23,8 @@ const lifeStages = {
         income: 0,
         expenses: 500,
         choices: [
-            { text: "Take a student loan", limit: 1 },
-            { text: "Work part-time", unlimited: true },
+            { text: "Take a student loan", unlimited: true },
+            { text: "Work part-time", limit: 2 },
             { text: "Live frugally", limit: 3 }
         ]
     },
@@ -30,9 +32,9 @@ const lifeStages = {
         income: 3000,
         expenses: 1500,
         choices: [
-            { text: "Save aggressively", limit: 2 },
+            { text: "Save aggressively", limit: 1 },
             { text: "Invest in stocks", limit: 3 },
-            { text: "Work full-time", unlimited: true }
+            { text: "Work full-time", limit: 2 }
         ]
     },
     "Marriage": {
@@ -40,7 +42,7 @@ const lifeStages = {
         expenses: 4000,
         choices: [
             { text: "Buy a house", limit: 1 },
-            { text: "Rent and save", limit: 3 },
+            { text: "Rent and save", limit: 2 },
             { text: "Luxury lifestyle", limit: 2 }
         ]
     },
@@ -50,7 +52,7 @@ const lifeStages = {
         choices: [
             { text: "Rely on savings", limit: 3 },
             { text: "Invest in passive income", limit: 3 },
-            { text: "Work part-time", unlimited: true }
+            { text: "Work part-time", limit: 1 }
         ]
     }
 };
@@ -77,11 +79,28 @@ const partTimeJobs = {
 
 
 const events = [
-    { message: "Unexpected medical bill! Lose $1000.", impact: -1000 },
-    { message: "Bonus at work! Gain $2000.", impact: 2000 },
-    { message: "Stock market crash! Lose $500.", impact: -500 },
-    { message: "Side hustle success! Gain $1500.", impact: 1500 },
+    { message: "Stock market crashed! Huge losses incurred. Portfolio down by 8%.", impact: -800 },
+    { message: "Great day! Earned a total profit of 12% on investments.", impact: 1200 },
+    { message: "Phew! That was close! Took a loss, but only 3% down.", impact: -300 },
+    { message: "Not a great day, but good enough. Managed a small 4% profit.", impact: 400 },
+    { message: "Tech stocks skyrocketed! Portfolio up by 15%!", impact: 1500 },
+    { message: "A bad day for the markets. A 6% dip hit hard.", impact: -600 },
+    { message: "Surprising market rebound! Earned a quick 7% profit.", impact: 700 },
+    { message: "Major sell-off! Lost 10% of portfolio value.", impact: -1000 },
+    { message: "Steady gains! Portfolio climbed by 5%.", impact: 500 },
+    { message: "A volatile session, but ended up with a 2% gain.", impact: 200 },
+    { message: "Inflation fears spooked the market. Lost 4%.", impact: -400 },
+    { message: "Earnings season boost! Gained 9% today.", impact: 900 },
+    { message: "Regulatory changes hurt the market. Dropped 7%.", impact: -700 },
+    { message: "A surprising rally! Unexpected 13% profit!", impact: 1300 },
+    { message: "A tough day. Stocks fell, resulting in a 5% loss.", impact: -500 },
+    { message: "Safe bets paid off! A steady 6% gain.", impact: 600 },
+    { message: "Sector rotation in play! Your stocks are up by 8%.", impact: 800 },
+    { message: "Heavy volatility! Despite the swings, gained 3%.", impact: 300 },
+    { message: "Fed policy announcement shook the market. Lost 9%.", impact: -900 },
+    { message: "A mixed day, but still managed a small 1% profit.", impact: 100 }
 ];
+
 
 function startGame() {
     player.stage = "College";
@@ -98,6 +117,11 @@ function triggerRandomEvent() {
 }
 
 function makeChoice(choice) {
+    // If the choice is not "Buy a house", hide the house options
+    if (choice !== "Buy a house") {
+        document.getElementById("houseOptions").style.display = "none";
+    }
+
     let stageData = lifeStages[player.stage];
     let selectedChoice = stageData.choices.find(c => c.text === choice);
     
@@ -121,6 +145,7 @@ function makeChoice(choice) {
 
     updateUI();
 }
+
 
 function applyChoiceEffects(choice) {
     if (choice === "Take a student loan") {
@@ -163,13 +188,12 @@ function applyChoiceEffects(choice) {
     
     // Check for bankruptcy immediately.
     if (player.balance < 0) {
-        alert("Game Over! You went bankrupt! 😢");
-        resetGame();
+        gameOver(player.balance);
         return;
     }
-    
-    updateUI();
+
     moveWalkingMan();
+    updateUI();
 }
 
 
@@ -191,8 +215,7 @@ function buyHouse(debt, incomeIncrease) {
     moveWalkingMan();
     // Immediately check if balance is negative
     if (player.balance < 0) {
-        alert("Game Over! You went bankrupt! 😢");
-        resetGame();
+        gameOver(player.balance);
         return;
     }
     
@@ -204,10 +227,12 @@ function investInPassiveIncome() {
     let investment = player.balance * 0.3;
     
     if (investment > 0) {
-        player.balance -= investment; // Deduct investment amount immediately
-        player.passiveIncome += investment * 0.1; // Add yearly passive income
+        player.balance -= investment;
+        let passiveGain = Number((investment * 0.1).toFixed(2));
+        player.passiveIncome += passiveGain;
     }
 }
+
 
 
 function resetGame() {
@@ -218,11 +243,19 @@ function resetGame() {
     player.balance = 10000;
     player.debt = 0;
     player.expenses = 0;
-    player.choicesMade = 0; // ✅ Reset to 0 (integer)
+    player.choicesMade = {}; 
     player.currentJob = "";
     player.passiveIncome = 0;
 
-    choicesMade = 0; // ✅ Also reset global choicesMade counter
+    choicesMade = 0; 
+
+    progressPercent = 0;
+    stepCount = 0;
+    stageIndex = 0;
+
+    const walkingMan = document.getElementById("walkingMan");
+    walkingMan.style.left = "0px";
+    walkingMan.src = window.imagePaths ? window.imagePaths[0] : "static/young.png";
 
     updateUI();
 }
@@ -232,11 +265,14 @@ function resetGame() {
 
    
 function assignPartTimeJob() {
+    let k = player.salary;
     let jobs = partTimeJobs[player.stage];
     let randomJob = jobs[Math.floor(Math.random() * jobs.length)];
 
     // Set the new salary and job details
-    player.income = randomJob.income;
+    player.salary = randomJob.income;
+    player.income = player.income + player.salary - k;
+    
     player.currentJob = `${randomJob.name} ($${randomJob.income})`;
 
     updateUI();
@@ -256,11 +292,11 @@ function nextStage() {
     } 
     else if (player.stage === "Marriage") {
         player.stage = "Retirement";
-        player.income = 0; 
+        player.income -= player.salary; 
         player.currentJob = ""; 
     } 
     else {
-        alert("Game Over! Your final balance: $" + player.balance);
+        gameOver(player.balance);
         return;
     }
 
@@ -292,9 +328,9 @@ function updateUI() {
         button.innerText = choice.text;
         button.onclick = () => makeChoice(choice.text);
 
-        // Disable button if limit is reached
+        // Instead of disabling the button, add a visual cue (class) if limit is reached.
         if (!choice.unlimited && player.choicesMade[choice.text] >= choice.limit) {
-            button.disabled = true;
+            button.classList.add("disabled-choice");
         }
 
         choicesContainer.appendChild(button);
@@ -304,22 +340,79 @@ function updateUI() {
 
 // Walking Man Mechanics
 
+let mainContent;
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const walkingMan = document.getElementById("walkingMan");
+    mainContent = document.getElementById("main-content");
+
+    if (!mainContent) {
+        console.error("main-content div not found!");
+        return;
+    }
+
+    // function setInitialPosition() {
+    //     walkingMan.style.left = mainContent.offsetLeft + "px";
+    // }
+
+    // setInitialPosition();
+});
+  
+
 let progressPercent = 0;  
 let stepCount = 0;        
 let stageIndex = 0;      
 
-const walkingMan = document.getElementById("walkingMan");
 const images = window.imagePaths; 
+// 
 
 function moveWalkingMan() {
+    if (!mainContent) {
+        console.error("mainContent is not found!");
+        return;
+    }
+
     progressPercent += 5;
-    walkingMan.style.left = progressPercent + "%";
+    console.log("Moving man to: " + ( (mainContent.offsetWidth * (progressPercent / 100))) + "px");
+
+    walkingMan.style.left = ( (mainContent.offsetWidth * (progressPercent / 100))) + "px";
+
     stepCount++;
-    if (stepCount >= 5) {
+    if (stepCount === 5) {
         stepCount = 0;
         if (stageIndex < images.length - 1) {
-        stageIndex++;
+            stageIndex++;
             walkingMan.src = images[stageIndex];
         }
     }
+}
+
+// gameOver functions
+
+function gameOver(finalAmount) {
+    let modal = document.getElementById("gameOverModal");
+    let message = document.getElementById("finalMessage");
+    let balance = document.getElementById("finalBalance");
+
+    if (finalAmount > 10000) {
+        message.innerText = "Amazing! You made a fortune!";
+    } else if (finalAmount > 5000) {
+        message.innerText = "Great job! You played it safe and earned well!";
+    } else if (finalAmount > 1000) {
+        message.innerText = "Not bad! You made some gains!";
+    } else if (finalAmount > 0) {
+        message.innerText = "Phew! At least you didn’t lose everything!";
+    } else {
+        message.innerText = "Ouch! The choices you made weren't in your favor.";
+    }
+
+    balance.innerText = `Final Balance: $${finalAmount}`;
+    modal.style.display = "block";
+}
+
+function restartGame() {
+    document.getElementById("gameOverModal").style.display = "none";
+    resetGame();
+    return;
 }

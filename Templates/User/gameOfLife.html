@@ -72,6 +72,7 @@
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       overflow-y: auto;           /* Scroll if content is long */
+      position: relative;
     }
 
     /* Balance Card */
@@ -170,6 +171,11 @@
     button:hover {
       background-color: #0056b3;
     }
+    .disabled-choice {
+      opacity: 0.5;       /* Faded look */
+      cursor: not-allowed; /* Change cursor to indicate no further action */
+    }
+
 
     
     /* Help Icon */
@@ -236,11 +242,56 @@
     position: absolute;
     bottom: 10px;
     left: 0;
-    width: 50px;
+    width: 70px;
     transition: left 0.5s ease-in-out;
-  }
+    height: 100px;
+    }
+
+    /* Game Over Module */
+
+    .game-over-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      border-radius: 10px;
+      z-index: 1000;
+      width: 400px;
+    }
+
+    .game-over-content {
+        font-size: 18px;
+    }
+
+    .game-over-modal button {
+      background: #007bff;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+
+    .game-over-modal button:hover {
+      background: #0056b3;
+    }
+
+    .game-over-modal p {
+      margin-bottom: 1.5rem;
+    }
+
+    .game-over-modal h2 {
+      margin-bottom: 1.5rem;
+    }
   </style>
 </head>
+
 <body>  
   <!-- Sidebar on the left -->
   <div class="sidebar">
@@ -258,7 +309,7 @@
   </div>
 
   <!-- Main content on the right -->
-  <div class="main-content">
+  <div class="main-content" id="main-content">
     <!-- Balance Card -->
     <div class="balance-card">
       <div class="card-top">
@@ -295,7 +346,7 @@
       </button>
     </div>
 
-    <img id="walkingMan" src="static/young.png" alt="hi">
+    <img id="walkingMan" src="static/young.png" alt="Man">
   </div>
 
   <!-- Help Icon -->
@@ -339,6 +390,15 @@
         <strong>Remember:</strong> Each choice affects your finances and represents one full year.
         Plan ahead and enjoy FinQuest! 🎉
       </p>
+    </div>
+  </div>
+
+  <div id="gameOverModal" class="game-over-modal">
+    <div class="game-over-content">
+      <h2>Game Over!</h2>
+      <p id="finalMessage"></p>
+      <p id="finalBalance"></p>
+      <button onclick="restartGame()">Play Again</button>
     </div>
   </div>
 
