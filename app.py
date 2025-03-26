@@ -163,7 +163,13 @@ def dislike_article(article_id):
         db.session.commit()
     return redirect(url_for('view_article', article_id=article_id))
 
+@app.route('/learningpaths')
+def  learningpaths():
+    return render_template('User/lpaths.html')
 
+@app.route('/comingsoon')
+def comingsoon():
+    return("....Coming Soon....")
 
 if __name__ == "__main__":
     app.run(debug = True)
