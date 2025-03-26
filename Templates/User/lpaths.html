@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinQuest</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        header {
+            background: #333;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+        }
+
+        .section-title-container {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 20px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            opacity: 0.3;
+            transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        .section-title.active {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .slide-container {
+            width: 70%;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            min-height: 300px;
+            text-align: left;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .slide {
+            display: none;
+        }
+
+        .slide.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-buttons {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            background: #ff7f50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background: #ff5722;
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        footer {
+            margin-top: 30px;
+            padding: 15px;
+            background: #333;
+            color: white;
+            width: 100%;
+        }
+         /* Main Content */
+    .main-content {
+        flex: 1;
+        padding: 2rem;
+        overflow-y: auto; /* Scroll if content is long */
+      }
+      /* Sidebar */
+    .sidebar {
+        width: 250px;
+        background-color: #fff;
+        border-right: 1px solid #e1e1e1;
+        padding: 1.5rem;
+      }
+      .sidebar .brand {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+        color: #4b4b4b;        
+      }
+      .sidebar nav ul {
+        list-style: none;
+        padding: 0;
+        padding-left: 1rem;
+        margin: 0;
+      }
+      .sidebar nav ul li {
+        margin-bottom: 1rem;
+        text-align: left;
+      }
+      .sidebar nav ul li a {
+        text-decoration: none;
+        color: #555;
+        font-size: 1rem;
+        padding: 0.8rem 0;
+        display: block;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+      }
+      .sidebar nav ul li a:hover {
+        background-color: #f0f0f0;
+      }
+      .sidebar nav ul li.active a {
+        background-color: #eef2ff; /* Light highlight */
+        color: #4b59f7;           /* Example accent color */
+        font-weight: 600;
+      }
+      .container {
+        display: flex;
+        height: 100vh; /* Full height */
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <div class="sidebar">
+        <div class="brand" style = "text-align:left">FinQuest</div>
+        <nav>
+          <ul>
+            <li class="active"><a href="/home">Dashboard</a></li>
+            <li><a href="/learningpaths">Learning Paths</a></li>
+            <li><a href="/articles">Articles</a></li>
+            <li><a href="/achievements">Achievements</a></li>
+            <li><a href="/game1">Games</a></li>
+            <li><a href="/profile">Profile</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="main-content">
+    <header>
+        <h1>FinQuest</h1>        
+    </header>
+
+    <div class="section-title-container">
+        <div class="section-title active" id="title-beginner">Beginner</div>
+        <div class="section-title" id="title-intermediate">Intermediate</div>
+        <div class="section-title" id="title-advanced">Advanced</div>
+    </div>
+
+    <div class="slide-container">
+        <div class="section active" id="beginner">
+            <div class="slide active">
+                <h2>Introduction to Investing – Why Invest?</h2>
+                <p>Investing is a way to grow wealth over time by putting money into assets such as stocks, bonds, or real estate. The main reason to invest is to earn returns that outpace inflation and provide long-term financial security...</p>
+            </div>
+            <div class="slide">
+                <h2>Types of Investments – Stocks, Bonds, Mutual Funds</h2>
+                <p>Stocks represent company ownership, bonds offer fixed returns, and mutual funds diversify investments. Understanding each type helps build a balanced investment portfolio suited to your financial goals...</p>
+            </div>
+            <div class="slide">
+                <h2>Risk Management – Diversification and Asset Allocation</h2>
+                <p>Minimizing risk is crucial. Diversification spreads investments across different asset types, while asset allocation ensures a portfolio fits an investor’s risk tolerance and financial goals...</p>
+            </div>
+        </div>
+
+        <div class="section" id="intermediate">
+            <div class="slide">
+                <h2>Fundamental vs. Technical Analysis – Evaluating Stocks</h2>
+                <p>Fundamental analysis examines a company’s earnings, financial health, and industry trends, while technical analysis studies stock price patterns and volume trends to predict future movements...</p>
+            </div>
+            <div class="slide">
+                <h2>Building a Diversified Portfolio</h2>
+                <p>A well-diversified portfolio includes multiple asset classes, reducing overall risk. Balancing stocks, bonds, and alternative investments improves stability and returns over time...</p>
+            </div>
+            <div class="slide">
+                <h2>Understanding Market Cycles</h2>
+                <p>Markets go through cycles of expansion and contraction. Recognizing these trends helps investors decide when to buy or sell investments for better long-term gains...</p>
+            </div>
+        </div>
+
+        <div class="section" id="advanced">
+            <div class="slide">
+                <h2>Options and Derivatives – Trading Strategies</h2>
+                <p>Options allow investors to hedge risks and speculate on market movements. Call options give the right to buy, while put options provide the right to sell at a set price...</p>
+            </div>
+            <div class="slide">
+                <h2>Advanced Valuation Techniques – DCF & P/E Ratios</h2>
+                <p>Discounted Cash Flow (DCF) analysis estimates a company's future earnings, while Price-to-Earnings (P/E) ratios help assess whether a stock is fairly valued...</p>
+            </div>
+            <div class="slide">
+                <h2>Economic Indicators – Impact on Investments</h2>
+                <p>GDP, inflation, and interest rates affect stock markets. A strong economy boosts corporate profits, while high inflation and rising interest rates can slow investment growth...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button id="prev" disabled>Previous</button>
+        <button id="next">Next</button>
+    </div>
+</div>
+</div>
+    <footer>
+        <p>&copy; 2025 FinQuest</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let sections = ["beginner", "intermediate", "advanced"];
+            let titles = sections.map(id => document.getElementById("title-" + id));
+            let currentSectionIndex = 0;
+            let currentSlideIndex = 0;
+            let sectionElements = sections.map(id => document.getElementById(id));
+
+            function updateSlide() {
+                document.querySelectorAll(".section").forEach(section => section.classList.remove("active"));
+                document.querySelectorAll(".slide").forEach(slide => slide.classList.remove("active"));
+
+                sectionElements[currentSectionIndex].classList.add("active");
+                let slides = sectionElements[currentSectionIndex].getElementsByClassName("slide");
+                slides[currentSlideIndex].classList.add("active");
+
+                titles.forEach(title => title.classList.remove("active"));
+                titles[currentSectionIndex].classList.add("active");
+
+                document.getElementById("prev").disabled = currentSectionIndex === 0 && currentSlideIndex === 0;
+                document.getElementById("next").textContent = currentSectionIndex === 2 && currentSlideIndex === slides.length - 1 ? "Restart" : "Next";
+            }
+
+            document.getElementById("next").addEventListener("click", function () {
+                let slides = sectionElements[currentSectionIndex].getElementsByClassName("slide");
+                if (currentSlideIndex < slides.length - 1) {
+                    currentSlideIndex++;
+                } else if (currentSectionIndex < sections.length - 1) {
+                    currentSectionIndex++;
+                    currentSlideIndex = 0;
+                } else {
+                    currentSectionIndex = 0;
+                    currentSlideIndex = 0;
+                }
+                updateSlide();
+            });
+
+            document.getElementById("prev").addEventListener("click", function () {
+                if (currentSlideIndex > 0) {
+                    currentSlideIndex--;
+                } else if (currentSectionIndex > 0) {
+                    currentSectionIndex--;
+                    currentSlideIndex = sectionElements[currentSectionIndex].getElementsByClassName("slide").length - 1;
+                }
+                updateSlide();
+            });
+
+            updateSlide();
+        });
+    </script>
+</body>
+</html>
